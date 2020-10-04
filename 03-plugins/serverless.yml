@@ -1,0 +1,46 @@
+service: hello-world-tutorial
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-2
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+functions:
+  main:
+    handler: hello.handler
+    events:
+      - http:
+          method: GET
+          path: /hello
+  name:
+    handler: hello.queryHandler
+    events:
+      - http:
+          method: GET
+          path: /name
+  pathTest:
+    handler: pathTest.handler
+    events:
+      - http:
+          method: PUT
+          path: /pathtest/{food}
+          request:
+            parameters:
+              path:
+                food: true
+  friends:
+    handler: friends.handler
+    events:
+      - http:
+          method: GET
+          path: /friends
+  article:
+    handler: article.handler
+    events:
+      - http:
+          method: POST
+          path: /article

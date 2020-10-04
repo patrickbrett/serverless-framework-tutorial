@@ -1,0 +1,48 @@
+service: hello-world-tutorial
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+       - dynamodb:Scan
+       - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:ap-southeast-2:790795982371:table/restaurantDatabase"
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+functions:
+  postOrder:
+    handler: postOrder.handler
+    events:
+      - http:
+          method: POST
+          path: /orders
+          cors: true
+  listOrders:
+    handler: listOrders.handler
+    events:
+      - http:
+          method: GET
+          path: /orders
+          cors: true
+
+resources:
+  Resources:
+    restaurantDatabase:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: restaurantDatabase
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

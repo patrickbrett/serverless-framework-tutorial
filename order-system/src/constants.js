@@ -1,0 +1,1 @@
+export const ENDPOINT_URL = 'https://5ctn8ahr5g.execute-api.ap-southeast-2.amazonaws.com/dev/orders';
